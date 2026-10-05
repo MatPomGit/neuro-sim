@@ -12,9 +12,20 @@ name: Budowanie EXE dla Windows
           - "3.10"
           - "3.11"
           - "3.12"
+      publish-release:
+        description: "Opublikuj wynik jako trwały GitHub Release"
+        required: true
+        default: false
+        type: boolean
+      release-tag:
+        description: "Tag wydania, np. neurosim-v0.3.0; wymagany przy publikacji"
+        required: false
+        default: ""
+        type: string
 
 permissions:
-  contents: read
+  contents: write
+  actions: write
 
 jobs:
   build-windows-exe:
@@ -57,10 +68,54 @@ jobs:
             -DestinationPath artifact/NeuroSim-Windows.zip `
             -Force
 
+      - name: Waliduj żądanie trwałego wydania
+        if: ${{ inputs.publish-release }}
+        shell: bash
+        run: |
+          test -n "${{ inputs.release-tag }}" || {
+            echo "::error::release-tag jest wymagany przy publish-release=true"
+            exit 2
+          }
+
       - name: Udostępnij artefakt do pobrania
         uses: actions/upload-artifact@v4
         with:
           name: NeuroSim-Windows-${{ github.run_number }}
           path: artifact/NeuroSim-Windows.zip
           if-no-files-found: error
-          retention-days: 7
+          retention-days: 3
+
+      - name: Wylicz SHA-256
+        if: ${{ inputs.publish-release }}
+        shell: pwsh
+        run: |
+          (Get-FileHash artifact/NeuroSim-Windows.zip -Algorithm SHA256).Hash.ToLower() + "  NeuroSim-Windows.zip" | Out-File -Encoding ascii artifact/SHA256SUMS.txt
+
+      - name: Opublikuj trwały GitHub Release
+        if: ${{ inputs.publish-release }}
+        uses: softprops/action-gh-release@v3
+        with:
+          tag_name: ${{ inputs.release-tag }}
+          target_commitish: ${{ github.sha }}
+          name: "NeuroSim ${{ inputs.release-tag }}"
+          files: |
+            artifact/NeuroSim-Windows.zip
+            artifact/SHA256SUMS.txt
+
+      - name: Usuń przejściowy artefakt Actions po wydaniu
+        if: ${{ success() && inputs.publish-release }}
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          gh api --paginate \
+            -H "X-GitHub-Api-Version: 2022-11-28" \
+            "repos/${GITHUB_REPOSITORY}/actions/artifacts?per_page=100" \
+            --jq '.artifacts[] | select(.workflow_run.id == ${{ github.run_id }}) | .id' \
+          | while read -r artifact_id; do
+              [ -z "$artifact_id" ] && continue
+              gh api --method DELETE \
+                -H "X-GitHub-Api-Version: 2022-11-28" \
+                "repos/${GITHUB_REPOSITORY}/actions/artifacts/$artifact_id"
+            done
