@@ -63,4 +63,4 @@ jobs:
           name: NeuroSim-Windows-${{ github.run_number }}
           path: artifact/NeuroSim-Windows.zip
           if-no-files-found: error
-          retention-days: 14
+          retention-days: 7
