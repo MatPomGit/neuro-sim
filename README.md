@@ -438,3 +438,8 @@ Dozwolone wartości `analysis.sets` są walidowane przez `brain_core/simulation/
 Instrukcja uruchamiania kontroli `mypy` oraz `ruff/pydocstyle` (tryb legacy i gating PR) znajduje się w:
 
 - `docs/developer_quality_checks.md`
+
+
+## Windows build snapshots
+
+Ręczny workflow `Budowanie EXE dla Windows` domyślnie tworzy tylko krótkotrwały artefakt CI. Jeżeli konkretna paczka ma być trwałym punktem odniesienia dla stanu aplikacji, uruchom workflow z `publish-release=true` i podaj jednoznaczny `release-tag`. Wtedy paczka Windows oraz `SHA256SUMS.txt` trafiają do GitHub Releases, a przejściowy artefakt Actions jest usuwany po poprawnej publikacji.
