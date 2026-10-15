@@ -1,9 +1,6 @@
 name: CI
 
 on:
-  push:
-    branches: [main]
-  pull_request:
   workflow_dispatch:
 
 permissions:
@@ -11,6 +8,7 @@ permissions:
 
 jobs:
   test:
+    if: ${{ github.ref == 'refs/heads/main' }}
     name: Python ${{ matrix.python-version }}
     runs-on: ubuntu-latest
     strategy:

@@ -991,3 +991,7 @@ Kod naukowy powinien umożliwiać odpowiedź na pytanie:
 > Co dokładnie zostało uruchomione, na jakich danych, z jakimi parametrami, w jakim środowisku i dlaczego uzyskano taki wynik?
 
 Jeżeli repozytorium nie pozwala odpowiedzieć na to pytanie, nie spełnia minimalnego standardu replikowalności badań.
+
+## GitHub Actions cost policy
+
+Agents must follow [`.github/ACTIONS_POLICY.md`](.github/ACTIONS_POLICY.md). Multi-version tests and Windows packaging are manual on `main`. Only minimal hosted lint on `main` may run automatically if introduced with an explicit budget and path filter; no PR or non-main CI.

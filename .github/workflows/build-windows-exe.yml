@@ -29,6 +29,7 @@ permissions:
 
 jobs:
   build-windows-exe:
+    if: ${{ github.ref == 'refs/heads/main' }}
     name: Budowanie paczki NeuroSim EXE
     runs-on: windows-latest
     timeout-minutes: 45
