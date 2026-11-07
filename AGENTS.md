@@ -1,5 +1,10 @@
 # AGENTS.md — wytyczne dla agentów AI w projekcie `neuro_sim`
 
+## Zasada publikacyjna „submission-first” (dyrektywa autora, 2026-11-07)
+
+Stosuj [RESEARCH.md](RESEARCH.md#submission-first-publication-policy-author-directive-2026-11-07): rzetelny, ukończony manuskrypt należy sprawnie przygotować do zgłoszenia za zgodą autora, zamiast bezterminowo dopracowywać go z obawy przed odrzuceniem. Nawet realna możliwość uzyskania 20 punktów jest korzystniejsza niż pozostawienie pracy niewysłanej, ale przyjęcie i punkty nie są gwarantowane. Po odrzuceniu proponuj rewizję i zgłoszenie do innego czasopisma. Nie wolno omijać kryteriów dowodowych, etycznych, metodologicznych ani samodzielnie wysyłać artykułów, kontaktować się z wydawcami czy zaciągać opłat bez wyraźnej zgody autora.
+
+
 Ten dokument definiuje obowiązkowe zasady dla agentów AI oraz ludzi wykonujących zmiany w repozytorium. Łączy reguły pracy nad projektem `neuro_sim` z zasadami pisania replikowalnego, wydajnego i czytelnego kodu naukowego w Pythonie.
 
 Kod w tym repozytorium należy traktować jako element metody badawczej. Oznacza to, że wynik eksperymentu powinien dać się powiązać z kodem, konfiguracją, danymi, środowiskiem uruchomieniowym, logami, metrykami oraz ziarnem losowości.
