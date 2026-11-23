@@ -177,7 +177,10 @@ def build_event_timeline(
         )
     )
 
-    ordered = sorted(events, key=lambda event: (event.time_s, event.event_type))
+    ordered = sorted(
+        events,
+        key=lambda event: (round(float(event.time_s), 6), event.event_type),
+    )
     timeline = [event.to_dict() for event in ordered]
     for event_index, event in enumerate(timeline):
         event["event_index"] = event_index
